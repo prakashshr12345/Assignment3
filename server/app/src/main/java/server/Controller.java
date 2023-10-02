@@ -9,30 +9,36 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.function.ServerResponse.Context;
+// import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import modal.User;
+import service.AdminConsole;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class Controller {
-
-    // private static Map<String, String> userCredentials = new HashMap<>();
-
-    // static {
-    //     userCredentials.put("admin", "admin");
-    //     userCredentials.put("user", "user");
-    // }
-
-    // Example functions
-    // The following are examples of what you can do with Spring, you will probably
-    // want remove them on submission
+ 
+    
+    @GetMapping("/")
+    public String getHello() {
+        AdminConsole adminConsole = new AdminConsole();
+        adminConsole.UserCheck();
+        return "login successful"; // Assuming this is a response for your frontend
+    }
 
     /*
      * This function runs when the url http://<host>:<port>/ is requested,
@@ -41,10 +47,11 @@ public class Controller {
      * (or PostMapping(args) for a post http message)
      * The return value is sent over the network to the client.
      */
-    @GetMapping("/")
-    public String getHello() {
-        return "Hello world";
-    }
+    // @GetMapping("/")
+    // public String getHello() {
+    
+    //     return "login successfull";
+    // }
 
     /*
      * For this, we show how to use information in the url as an argument to the
@@ -122,26 +129,12 @@ public class Controller {
 
     // End example functions
 
-    // private boolean authenticateUser(String username, String password) {
-    //     if (userCredentials.containsKey(username)) {
-    //         String storedPassword = userCredentials.get(username);
-    //         return password.equals(storedPassword);
-    //     }
-    //     return false;
+    // @PostMapping("/admin_console")
+    // public String adminConsole(@RequestBody String username, @RequestBody String password) {
+
+    //     return "Access denied";
+
     // }
-
-    @PostMapping("/admin_console")
-    public String adminConsole(@RequestBody String username, @RequestBody String password) {
-        // if (authenticateUser(username, password)) {
-        //     return "welcome buddy";
-        // } else {
-        //     return "Access denied";
-
-        // }
-                return "Access denied";
-
-
-    }
 
     @PostMapping("/audit_expenses")
     public String auditExpenses() {
